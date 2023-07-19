@@ -66,5 +66,55 @@ public_users.get('/review/:isbn',function (req, res) {
     const isbn = req.params.isbn;
     res.send(books[isbn]["reviews"]);
 });
+//Task 10
+public_users.get('promise/',function (req, res) {
+
+    const get_books = new Promise((resolve, reject) => {
+        resolve(res.send(JSON.stringify({books}, null, 4)));
+      });
+
+      get_books.then(() => console.log("Promise for Task 10 resolved"));
+
+  });
+//Task 11
+public_users.get('promise/isbn/:isbn',function (req, res) {
+    const get_isbn = new Promise((resolve, reject) => {
+      let isbn = req.params.isbn;  
+      resolve(res.send(books[isbn]));
+    });
+    get_isbn.then(()=>console.log("Promise for ISBN resolved"));
+   });
+//Task 12
+public_users.get('promise/author/:author',function (req, res) {
+    const get_author = new Promise((resolve, reject) => {
+        let authorBooks = [];
+        let isbns = Object.keys(books);  
+        isbns.forEach((isbn) => {
+            if(books[isbn]["author"] === req.params.author) {
+              authorBooks.push({"isbn":isbn,
+                                  "title":books[isbn]["title"],
+                                  "reviews":books[isbn]["reviews"]});
+            }
+          });
+          resolve(res.send(JSON.stringify({authorBooks}, null, 4)));
+      });
+      get_author.then(()=>console.log("Promise for Authors resolved"));
+});
+//Task 13
+public_users.get('promise/title/:title',function (req, res) {
+    const get_title= new Promise((resolve, reject) => {
+        let stories = [];
+        let titles = Object.keys(books);  
+        titles.forEach((isbn) => {
+            if(books[isbn]["title"] === req.params.title) {
+              authorBooks.push({"isbn":isbn,
+                                  "title":books[isbn]["title"],
+                                  "reviews":books[isbn]["reviews"]});
+            }
+          });
+          resolve(res.send(stories));
+      });
+      get_title.then(()=>console.log("Promise for Titles resolved"));
+});
 
 module.exports.general = public_users;
